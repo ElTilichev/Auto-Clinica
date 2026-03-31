@@ -1,0 +1,751 @@
+{
+  "name": "Proceso_principal",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.messages[0].text.body }} ",
+        "options": {
+          "systemMessage": "=Eres un **Agente de IA especializado** llamada Lia, encargado de optimizar la interacción entre los clientes y la clínica dental mediante el uso integral de las herramientas 'lista de procedimientos' 'informacion_clinica' y 'base de datos'.  \nTu función es clave para facilitar un servicio excepcional en:\n\n- La gestión y consulta de citas dentales.  \n- La provisión de información detallada del negocio.\n\n**Fecha y hora actual:** {{ $now.setZone('America/Mexico_City') }}\nEl día de la semana es: {{ $now.setZone('America/Mexico_city').weekdayLong }}\n\n\n---\n\n# Estilo Conversacional\n\n- Utiliza frases breves y ve directo al grano\n- Realiza solamente una pregunta por mensaje\n- Comunicate de una forma amigable y sin tecnicismos\n- Adaptate al estilo conversacional del usuario. Si el usuario no tiene lenguaje coloquial, tampoco tu.\n\n---\n\n# Instrucción\n\nUtiliza eficientemente la herramienta 'Lista de procedimientos' y 'informacion_clinica' para dar respuesta a los usuarios ante sus dudas y las herramientas de Google Calendar como lo son: 'Crear_Cita', 'Leer_Cita', 'modificar_cita' y 'Eliminar_cita' para ofrecer un servicio de alto nivel en:\n\n- La gestión de citas.  \n- La respuesta a consultas detalladas sobre el negocio, incluyendo precios, horarios y servicios disponibles, asi como la explicación breve y fácil de entender.\n\n## Debes:\n- Gestionar las citas con precisión y eficacia.  \n- Proporcionar respuestas informativas basadas en los datos del negocio utilizando la herramienta informacion_clinica.\n- Consultar la 'base de datos lectura' para averiguar informacion del paciente como: ultima visita, que procedimiento se le realizo y, si utiliza un seguro. Tambien de registrar al paciente en la base de datos si no existe informacion sobre el, asi tambien como actualizar si es necesario la informacion, sobre todo la 'ultima visita' y 'procedimiento' en la herramienta 'base de datos escritura'\n\n---\n\n# 🧭 Pasos\n\n## 🔹 Inicio\n\nSaluda al cliente con amabilidad y mencionando el nombre de Dr Luis Aceves, mostrando total disposición para asistir en sus necesidades relacionadas con la gestión de citas o consultas sobre el negocio.\n\n---\n\n## 🔹 Identificación del cliente\n\nSolicita **su nombre completo** de manera cortés para una identificación efectiva en el sistema. Busca en 'base de datos' si existe y de existir, recuerdale al paciente su ultima visita y procedimiento realizado y confirma.\n\n---\n## 🔹 Motivo de consulta\n\nPregunta amablemente su motivo de consulta, si no lo tiene muy claro, agenda como cita general. Asi mismo pregunta si es la primera vez que nos visita, de ser asi, coloca el emoji \"1️⃣​\" en el motivo de consulta.\n\n---\n\n## 🔹 Acción a realizar\n\nAtiende las necesidades específicas del cliente, que pueden incluir:\n\n- Consulta de disponibilidad con la herramienta Leer_cita, y en dado caso de existir disponibilidad genera la cita con Crear_cita, de no existir disponibilidad (que ya exista una cita dentro del horario solicitado) pedir al paciente otra hora o fecha.\n- **Modificación o cancelación** de citas existentes.\n- Provisión de **información detallada** sobre precios, servicios a traves de la herramienta \"lista de procedimientos\"\n- Toma en cuenta el tiempo que tarda el procedimiento solicitado para determinar la duracion de la cita.\n- El horario de atención es de 11 horas a 13 hrs y de 17 hrs a 19 hrs, de lunes a jueves.\n- Cualquier modificacion, cancelacion o agendacion, debe ser informada a traves de la herramienta 'TeleBot'\n---\n\n## 🔹 Confirmación y asistencia adicional\n\nConfirma con el cliente la acción realizada y **ofrece asistencia adicional si es necesario**, garantizando una experiencia positiva y satisfactoria. Tambien realiza un aviso de confirmacion en la herramienta 'TeleBot' para que todos en el consultorio estemos enterados de que agendaste un paciente, incluye nombre, fecha y hora de la consulta y tambien el numero del que nos contacto el paciente. Tambien, si existe alguna promocion en la herramienta 'informacion_clinica' mencionala brevemente. Si no existe en la base de datos, incluye al paciente con la herramienta 'base de datos escritura', en procedimiento coloca \"Citado\" y coloca la fecha para la que tiene cita.\n\n---\n\n# 🎯 Objetivo Final\n\nMejorar significativamente la **comunicación y gestión de citas dentales**, aprovechando al máximo las herramientas informacion_clinica' y 'lista de procedimientos', para proporcionar un proceso de atención al cliente **fluido, informativo y eficiente** de inicio a fin. Tambien, tu función central es orillar al paciente a agendar, sin llegar a hositgar.\n\n---\n## 🔹 Modificacion, cancelacion y consulta de citas.\n\nPara modificar una cita, utiliza la herramienta 'modificar_cita' para realizar el cambio que solicita el paciente.\n\nPara cancelar una cita, utiliza la herramienta 'eliminar_cita', eliminando del todo el evento.\n\nPara la consulta de la cita, utiliza la herramienta 'Leer_cita' solicitando el nombre del paciente para ubicar el evento. Otorga la informacion integrada en el evento.\n\n---\n\n# ❗ Limitaciones\n\n- Nunca por ningun motivo generes una cita fuera del horario establecido en la herramienta 'informacion_clinica'\n- Nunca pongas una cita sobre otra, si el usuario requiere hacer un cambio, utiliza 'actualizar_cita' para modificar la cita.\n- Al escribir resaltado en negritas no uses doble asterisco '**ejemplo**', utiliza un solo asterisco asi: '*ejemplo*'\n- De no tener información clara para propocioar al usuario, no inventes información, recuerda que atiendes a multiples posibles pacientes del consultorio. \n- Nunca salgas de los temas relacionados a tus funciones, orienta al usuario para que no salga del tema respecto a los correspondientes al consultorio medico.\n\nSiempre manteniendo una atención detallada en **las preferencias del cliente** y la **información específica del negocio**.",
+          "returnIntermediateSteps": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -1040,
+        140
+      ],
+      "id": "82fbea25-e955-45e8-816b-223a4b605021",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "frequencyPenalty": 0.5,
+          "presencePenalty": 0.2,
+          "temperature": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1240,
+        280
+      ],
+      "id": "91537fc6-7a2f-40c1-b16e-08ec38ddcd3e",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "= {{ $json.messages }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1260,
+        440
+      ],
+      "id": "c2d31b93-f8ef-43dd-b628-e933a7dd040a",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1560,
+        160
+      ],
+      "id": "b19d0442-1e02-48a8-ba26-45b55ae03e2c",
+      "name": "WhatsApp Trigger",
+      "webhookId": "a48f413f-f7c7-4e76-bf9a-b1caaf881fae",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "YOUR_WHATSAPP_TRIGGER_CREDENTIAL_ID",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "YOUR_WHATSAPP_PHONE_NUMBER_ID",
+        "recipientPhoneNumber": "={{ $json.recipient }}",
+        "textBody": "={{ $json.message }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        140
+      ],
+      "id": "35a25099-9292-4566-b3de-79b28a77aa49",
+      "name": "WhatsApp Business Cloud",
+      "webhookId": "c00412e6-c1b6-45a8-85a5-2e72a0bfe62c",
+      "alwaysOutputData": false,
+      "credentials": {
+        "whatsAppApi": {
+          "id": "YOUR_WHATSAPP_API_CREDENTIAL_ID",
+          "name": "NumeroReal"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtén los datos del WhatsApp Trigger\nlet wa_id = $('WhatsApp Trigger').first().json.contacts[0].wa_id\n\n// Corrige el formato del número\nlet correctedNumber = wa_id.startsWith(\"521\") ? \"52\" + wa_id.slice(3) : wa_id;\n\n// Devuelve el número corregido como output del nodo\nreturn {\n  json: {\n    recipient: correctedNumber,\n    message: $('AI Agent').first().json.output\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -500,
+        140
+      ],
+      "id": "1d1345cc-8af1-459b-8880-a85f94f65d8c",
+      "name": "Code"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        80,
+        100
+      ],
+      "id": "95ee3532-6093-4439-b925-39db08df058b",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "YOUR_WHATSAPP_PHONE_NUMBER_ID",
+        "recipientPhoneNumber": "YOUR_DOCTOR_WHATSAPP_NUMBER",
+        "textBody": "=El nùmero:  {{ $('Code').item.json.recipient }} intento comunicarse sin èxito: \n\n\" {{ $('WhatsApp Trigger').item.json.messages[0].text.body }} \"",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        80,
+        260
+      ],
+      "id": "5c5e31fe-12b1-42b9-b355-f34702c9e355",
+      "name": "WhatsApp Business Cloud1",
+      "webhookId": "2bb6573e-ed65-4a9d-a05f-6d4f2667e82e",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "YOUR_WHATSAPP_API_CREDENTIAL_ID",
+          "name": "NumeroReal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Utiliza esta herramienta para agendar una cita, utiliza el nombre completo que te proporcionan para incluirlo en el calendario.",
+        "calendar": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_CALENDAR_ID",
+          "mode": "list",
+          "cachedResultName": "Pruebas Citas"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -800,
+        660
+      ],
+      "id": "96639a33-c8a4-447c-84c3-470945197cd1",
+      "name": "Crear_Cita",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YOUR_GOOGLE_CALENDAR_CREDENTIAL_ID",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Usa esta herramienta para leer la cita del paciente, solicitando su nombre para identificar la cita, otorgando datos como Hora y Fecha.",
+        "operation": "get",
+        "calendar": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_CALENDAR_ID",
+          "mode": "list",
+          "cachedResultName": "Pruebas Citas"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -620,
+        520
+      ],
+      "id": "446e6016-dc76-48d1-8ba2-646eaea7117e",
+      "name": "Leer_Cita",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YOUR_GOOGLE_CALENDAR_CREDENTIAL_ID",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Entrada de mensaje del Paciente\n",
+        "height": 700,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1600,
+        -120
+      ],
+      "id": "409c2094-eda3-4783-8578-7b257d5e33d8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Obtencion de mensaje y procesamiento de mensaje\n",
+        "height": 500
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1340,
+        80
+      ],
+      "id": "2e24b779-7ea2-441a-a7c5-3188ad9e044c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Obtencion de informacion del giro del negocio",
+        "height": 400,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1080,
+        420
+      ],
+      "id": "546cbba9-9930-45e6-821f-fd104bb882c8",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "Creacion, lectura y eliminacion de citas.",
+        "height": 380,
+        "width": 460,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -820,
+        420
+      ],
+      "id": "7ff4acc0-8d97-4276-a14a-0d827c115156",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "Tratamiento y envio de mensaje",
+        "height": 480,
+        "width": 740,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -760,
+        -80
+      ],
+      "id": "e8cbccec-e631-4365-99b3-f3baa8c21659",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Utiliza esta herramienta para eliminar las citas de los pacientes, siempre verificando el nombre del paciente para no borrar otras citas que no sean las indicadas.",
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_CALENDAR_ID",
+          "mode": "list",
+          "cachedResultName": "Pruebas Citas"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {
+          "sendUpdates": "all"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -760,
+        520
+      ],
+      "id": "3cbc9978-168f-4141-8cfc-0f68a4157e67",
+      "name": "Eliminar_Cita",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YOUR_GOOGLE_CALENDAR_CREDENTIAL_ID",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Usa esta herramienta para modificar la cita del paciente a la hora requerida pidiendo su nombre para identificar la cita, tomando en cuenta siempre la disponibilidad.",
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_CALENDAR_ID",
+          "mode": "list",
+          "cachedResultName": "Pruebas Citas"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "modifyTarget": "event",
+        "updateFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -500,
+        620
+      ],
+      "id": "a50f2220-3941-4f26-bc75-fd9f736def26",
+      "name": "modificar_cita",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YOUR_GOOGLE_CALENDAR_CREDENTIAL_ID",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Usa esta hoja para obtener información acerca de los procedimientos que se realizan en el consultorio y explícalos de forma que lo pueda entender el paciente y contesta todas sus preguntas.",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_PROCEDURES_URL",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Hoja 1",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        -1060,
+        500
+      ],
+      "id": "c904bb72-62e6-4880-9d16-ad755a3c7670",
+      "name": "Lista de procedimientos",
+      "notesInFlow": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_CALENDAR_ID",
+          "mode": "list",
+          "cachedResultName": "Pruebas Citas"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -460,
+        460
+      ],
+      "id": "57cff6f9-5643-4ade-ac90-41f19afee9a1",
+      "name": "checar_disponibilidad",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YOUR_GOOGLE_CALENDAR_CREDENTIAL_ID",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Utiliza esta herramienta para obtener información del consultorio, tal como horario, formas de pago, avisos y ubicación.",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_CLINIC_INFO_ID",
+          "mode": "list",
+          "cachedResultName": "informacion_clinica",
+          "cachedResultUrl": "YOUR_GOOGLE_SHEETS_CLINIC_INFO_URL"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "YOUR_GOOGLE_SHEETS_CLINIC_INFO_URL_GID0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        -940,
+        500
+      ],
+      "id": "cbf67a57-9de7-4da7-9beb-247fd15b42c9",
+      "name": "informacion_clinica",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "=usa esta herramienta para mandar mensaje, dando aviso de que agendaste un paciente, que cambio la cita o que se cancelo, agrega la hora y fecha a la que se agendo así como el nombre del paciente y tambien integrar el numero del que nos manda mensaje para poder contactar con el paciente ante cualquier situacion que se presente.",
+        "chatId": "YOUR_TELEGRAM_CHAT_ID",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTool",
+      "typeVersion": 1.2,
+      "position": [
+        -260,
+        480
+      ],
+      "id": "cedcb28d-5309-4392-80d6-8389da567aad",
+      "name": "TeleBot",
+      "webhookId": "b016298b-2bfa-4b6d-a995-aa11db7e1e85",
+      "credentials": {
+        "telegramApi": {
+          "id": "YOUR_TELEGRAM_CREDENTIAL_ID",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "=Utiliza esta herramienta para identificar pacientes",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_PATIENTS_DB_ID",
+          "mode": "list",
+          "cachedResultName": "BD pacientes mejorada",
+          "cachedResultUrl": "YOUR_GOOGLE_SHEETS_PATIENTS_DB_URL"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1119460869,
+          "mode": "list",
+          "cachedResultName": "Pacientes IA - Hoja 1",
+          "cachedResultUrl": "YOUR_GOOGLE_SHEETS_PATIENTS_DB_URL_GID"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        -940,
+        680
+      ],
+      "id": "a5a81401-eca7-4228-bbe1-f44e6bae6695",
+      "name": "base de datos lectura",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "=Utiliza esta herramienta para modificar despues de una consulta, o añadir a un paciente al agendar. en procedimiento coloca \"Citado\" despues de agendar una cita",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_PATIENTS_DB_ID",
+          "mode": "list",
+          "cachedResultName": "BD pacientes mejorada",
+          "cachedResultUrl": "YOUR_GOOGLE_SHEETS_PATIENTS_DB_URL"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1119460869,
+          "mode": "list",
+          "cachedResultName": "Pacientes IA - Hoja 1",
+          "cachedResultUrl": "YOUR_GOOGLE_SHEETS_PATIENTS_DB_URL_GID"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        -1060,
+        680
+      ],
+      "id": "1a1eb348-d740-4dbc-9dd4-445682c56533",
+      "name": "base de datos escritura",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Business Cloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Business Cloud": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "WhatsApp Business Cloud1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear_Cita": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer_Cita": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar_Cita": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "modificar_cita": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lista de procedimientos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "checar_disponibilidad": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "informacion_clinica": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TeleBot": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "base de datos lectura": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "base de datos escritura": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "6c799d7e-3dfc-407f-b64e-fede02888d8a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "YOUR_N8N_INSTANCE_ID"
+  },
+  "id": "YOUR_WORKFLOW_ID",
+  "tags": []
+}
